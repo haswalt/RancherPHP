@@ -13,6 +13,11 @@ class Action
      */
     private $name;
 
+    public function __construct($name)
+    {
+        $this->name = $name;
+    }
+
     /**
      * @return string
      */
