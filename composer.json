@@ -13,7 +13,7 @@
     }
   ],
   "autoload": {
-    "psr-4": { "Rancher": "src/" }
+    "psr-4": { "Rancher\\": "src/" }
   },
   "require": {
     "php": ">=5.3.9",
