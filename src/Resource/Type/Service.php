@@ -4,6 +4,10 @@ namespace Rancher\Resource\Type;
 
 use Rancher\Resource\Resource;
 
+/**
+ * Class Service
+ * @package Rancher\Resource\Type
+ */
 class Service extends Resource
 {
     /**

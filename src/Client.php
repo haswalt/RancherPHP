@@ -6,19 +6,45 @@ use Rancher\Resource\Collection;
 use Rancher\Resource\Resource;
 use Rancher\Exception\InvalidResourceException;
 use Rancher\Exception\InvalidResourceTypeException;
+use Rancher\Exception\ResourceNotFoundException;
+use Rancher\Exception\GetResourceException;
 
+/**
+ * Class Client
+ * @package Rancher
+ */
 class Client
 {
+    /**
+     * @var \GuzzleHttp\Client
+     */
     private $client;
 
+    /**
+     * @var string
+     */
     private $host;
 
+    /**
+     * @var string
+     */
     private $authKey;
 
+    /**
+     * @var string
+     */
     private $authSecret;
 
+    /**
+     * @var array<\Rancher\Resource\Resource>
+     */
     private $resources;
 
+    /**
+     * @param $host string
+     * @param $authKey string
+     * @param $authSecret string
+     */
     public function __construct($host, $authKey, $authSecret)
     {
         $this->host = $host;
@@ -26,6 +52,11 @@ class Client
         $this->authSecret = $authSecret;
     }
 
+    /**
+     * @param $method string
+     * @param $args mixed
+     * @return \Rancher\Resource\Collection
+     */
     public function __call($method, $args)
     {
         // discover links first
@@ -40,6 +71,9 @@ class Client
         return $this->getResource($resource);
     }
 
+    /**
+     * Load the initial links from the API
+     */
     public function discover()
     {
         if (null === $this->resources) {
@@ -55,6 +89,10 @@ class Client
         }
     }
 
+    /**
+     * @param \Rancher\Resource\Resource $resource
+     * @return \Rancher\Resource\Collection
+     */
     public function getResource(Resource $resource)
     {
         try {
@@ -97,11 +135,19 @@ class Client
 
             return $collection;
         } catch (\GuzzleHttp\Exception\ClientException $e) {
-            echo $e->getMessage().PHP_EOL;
-            return false;
+            if ($e->getCode() == 404) {
+                throw new ResourceNotFoundException($e->getMessage(), 404);
+            } else {
+                throw new GetResourceException($e->getMessage(), $e->getCode());
+            }
         }
     }
 
+    /**
+     * @param $uri string
+     * @param string $method
+     * @return Response
+     */
     private function call($uri, $method = 'get')
     {
         return $this->getClient()->$method($uri, [
@@ -111,6 +157,9 @@ class Client
         ]);
     }
 
+    /**
+     * @return \GuzzleHttp\Client
+     */
     private function getClient()
     {
         if (null == $this->client) {
