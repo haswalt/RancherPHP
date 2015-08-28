@@ -90,6 +90,28 @@ class Client
         }
     }
 
+    public function doAction(Resource $resource, Action $action, $args)
+    {
+        try {
+            $response = $this->call($resource->getUri(), 'post', [
+                'body' => json_encode($args),
+                'query' => [
+                    'action' => $action->getName(),
+                ],
+            ]);
+
+            $json = json_decode($response->getBody(), true);
+
+            return $json;
+        } catch (\GuzzleHttp\Exception\ClientException $e) {
+            if ($e->getCode() == 404) {
+                throw new ResourceNotFoundException($e->getMessage(), 404);
+            } else {
+                throw new GetResourceException($e->getMessage(), $e->getCode(), $e->getResponse());
+            }
+        }
+    }
+
     /**
      * @param \Rancher\Resource\Resource $resource
      * @return \Rancher\Resource\Collection
@@ -127,7 +149,7 @@ class Client
 
                     foreach ($data['links'] as $resourceName => $uri) {
                         $resource = new Resource($this, $uri);
-                        $item->addResource(strtolower($resourceName), $resource);
+                        $item->setResource(strtolower($resourceName), $resource);
                     }
 
                     foreach ($data['actions'] as $actionName => $uri) {
@@ -135,8 +157,8 @@ class Client
                         parse_str($query, $parts);
 
                         if (isset($parts['action'])) {
-                            $action = new Action($parts['actiom']);
-                            $item->addAction(strtolower($actionName), $action);
+                            $action = new Action($parts['action']);
+                            $item->setAction(strtolower($actionName), $action);
                         }
                     }
                 }
@@ -149,7 +171,7 @@ class Client
             if ($e->getCode() == 404) {
                 throw new ResourceNotFoundException($e->getMessage(), 404);
             } else {
-                throw new GetResourceException($e->getMessage(), $e->getCode());
+                throw new GetResourceException($e->getMessage(), $e->getCode(), $e->getResponse());
             }
         }
     }
@@ -159,13 +181,15 @@ class Client
      * @param string $method
      * @return Response
      */
-    private function call($uri, $method = 'get')
+    private function call($uri, $method = 'get', array $args = [])
     {
-        return $this->getClient()->$method($uri, [
+        $params = array_merge_recursive([
             'auth' => [
                 $this->authKey, $this->authSecret,
             ],
-        ]);
+        ], $args);
+
+        return $this->getClient()->$method($uri, $params);
     }
 
     /**
