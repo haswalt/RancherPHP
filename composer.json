@@ -1,0 +1,27 @@
+{
+  "name": "haswalt/rancher-php",
+  "type": "library",
+  "description": "RancherPHP is PHP client library for interacting with the Rancher API",
+  "keywords": ["web service", "rancher", "client"],
+  "homepage": "http://github.com/haswalt/RancherPHP",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Harry Walter",
+      "email": "harry.walter@lqdinternet.com",
+      "homepage": "http://harrywalter.co.uk"
+    }
+  ],
+  "autoload": {
+    "psr-4": { "Rancher": "src/" }
+  },
+  "require": {
+    "php": ">=5.3.9",
+    "guzzlehttp/guzzle": "~6.0"
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "1.0-dev"
+    }
+  }
+}
