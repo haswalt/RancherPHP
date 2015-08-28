@@ -4,6 +4,7 @@ namespace Rancher;
 
 use Rancher\Resource\Collection;
 use Rancher\Resource\Resource;
+use Rancher\Resource\Action;
 use Rancher\Exception\InvalidResourceException;
 use Rancher\Exception\InvalidResourceTypeException;
 use Rancher\Exception\ResourceNotFoundException;
@@ -126,7 +127,17 @@ class Client
 
                     foreach ($data['links'] as $resourceName => $uri) {
                         $resource = new Resource($this, $uri);
-                        $item->addResource($resourceName, $resource);
+                        $item->addResource(strtolower($resourceName), $resource);
+                    }
+
+                    foreach ($data['actions'] as $actionName => $uri) {
+                        $query = parse_url($uri, PHP_URL_QUERY);
+                        parse_str($query, $parts);
+
+                        if (isset($parts['action'])) {
+                            $action = new Action($parts['actiom']);
+                            $item->addAction(strtolower($actionName), $action);
+                        }
                     }
                 }
 
