@@ -6,7 +6,7 @@ namespace Rancher\Resource;
  * Class Collection
  * @package Rancher\Resource
  */
-class Collection implements \ArrayAccess, \Countable, \IteratorAggregate
+class Collection implements \ArrayAccess, \Countable, \IteratorAggregate, \JsonSerializable
 {
     /**
      * @var array
@@ -263,4 +263,18 @@ class Collection implements \ArrayAccess, \Countable, \IteratorAggregate
     {
         $this->_items = [];
     }
+
+    /**
+     * (PHP 5 &gt;= 5.4.0)<br/>
+     * Specify data which should be serialized to JSON
+     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     */
+    function jsonSerialize()
+    {
+        return $this->getValues();
+    }
+
+
 }
