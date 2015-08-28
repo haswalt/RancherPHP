@@ -257,6 +257,14 @@ class Collection implements \ArrayAccess, \Countable, \IteratorAggregate, \JsonS
     }
 
     /**
+     * @param \Closure $p
+     * @return static
+     */
+    public function filter(\Closure $p) {
+        return new static(array_filter($this->_items, $p));
+    }
+
+    /**
      * Clear all items in collection
      */
     public function clear()
@@ -275,6 +283,4 @@ class Collection implements \ArrayAccess, \Countable, \IteratorAggregate, \JsonS
     {
         return $this->getValues();
     }
-
-
 }
