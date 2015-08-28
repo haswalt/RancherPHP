@@ -76,6 +76,11 @@ class Client
 
                 foreach ($data as $key => $value) {
                     if ($r->hasProperty($key)) {
+                        // special hack case for created date
+                        if ($key == "created") {
+                            $value = new \DateTime($value);
+                        }
+
                         $property = $r->getProperty($key);
                         $property->setAccessible(true);
                         $property->setValue($item, $value);
