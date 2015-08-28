@@ -8,5 +8,18 @@ namespace Rancher\Exception;
  */
 class GetResourceException extends \RuntimeException implements RancherException
 {
+    protected $response;
+
+    public function __construct($message, $code, \GuzzleHttp\Psr7\Response $response)
+    {
+        parent::__construct($message, $code);
+
+        $this->response = $response;
+    }
+
+    public function getResponse()
+    {
+        return $this->response;
+    }
 
 }
