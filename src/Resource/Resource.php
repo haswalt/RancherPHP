@@ -49,19 +49,33 @@ class Resource implements \JsonSerializable
      */
     public function __call($method, $args)
     {
+        // check actions first
+        $method = strtolower($method);
         $type = substr($method, 0, 3);
 
-        $resourceName = strtolower(str_replace($type, '', $method));
-        if (false == array_key_exists($resourceName, $this->resources)) {
-            throw new InvalidResourceException(sprintf('Resource "%s" not found in context', $resourceName));
+        if ($type == "get") {
+            return $this->callResource(str_replace($type, '', $method));
+        } elseif (array_key_exists($method, $this->actions)) {
+            return $this->callAction($method, array_shift($args));
+        }
+    }
+
+    private function callAction($name, $args)
+    {
+        $action = $this->actions[$name];
+
+        return $this->client->doAction($this, $action, $args);
+    }
+
+    private function callResource($name)
+    {
+        if (false == array_key_exists($name, $this->resources)) {
+            throw new InvalidResourceException(sprintf('Resource "%s" not found in context', $name));
         }
 
-        $resource = $this->resources[$resourceName];
+        $resource = $this->resources[$name];
 
-        switch($type) {
-            default:
-                return $this->client->getResource($resource);
-        }
+        return $this->client->getResource($resource);
     }
 
     /**
@@ -76,7 +90,7 @@ class Resource implements \JsonSerializable
      * @param $name string
      * @param \Rancher\Resource\Resource $resource
      */
-    public function addResource($name, Resource $resource)
+    public function setResource($name, Resource $resource)
     {
         $this->resources[$name] = $resource;
     }
@@ -85,7 +99,7 @@ class Resource implements \JsonSerializable
      * @param $name string
      * @param \Rancher\Resource\Action $action
      */
-    public function addAction($name, Action $action)
+    public function setAction($name, Action $action)
     {
         $this->actions[$name] = $action;
     }
