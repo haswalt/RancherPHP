@@ -8,9 +8,7 @@ or resources and RancherPHP exposes these in a simple interface.
 $client = new Rancher\Client('http://localhost:9000/v1', 'key', 'secret');
 $projects = $client->getProjects();
 
-$myFirstProject = $projects[0];
-
-$services = $myFirstProject->getServices();
+$services = $projects->first()->getServices();
 ```
 
 ## Installing RancherPHP
