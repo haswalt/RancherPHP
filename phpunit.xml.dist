@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/4.1/phpunit.xsd"
+         backupGlobals="false"
+         colors="true">
+
+    <php>
+        <ini name="error_reporting" value="-1"/>
+    </php>
+
+    <testsuites>
+        <testsuite name="RancherPHP">
+            <directory>./tests</directory>
+        </testsuite>
+    </testsuites>
+
+    <logging>
+        <log type="coverage-html"
+             title="RancherPHP"
+             target="build/coverage"
+             charset="UTF-8"
+             yui="true"
+             highlight="false"
+             lowUpperBounds="35"
+             highLowerBounds="70"/>
+        <log type="coverage-clover" target="build/logs/clover.xml"/>
+        <log type="junit" target="build/logs/junit.xml" logIncompleteSkipped="false"/>
+    </logging>
+</phpunit>
