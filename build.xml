@@ -145,10 +145,10 @@
     <target name="phpunit"
             depends="prepare"
             description="Run unit tests">
-        <apply executable="${toolsdir}/phpunit" failonerror="true">
+        <exec executable="${toolsdir}/phpunit" failonerror="true">
             <arg value="--configuration"/>
             <arg path="${basedir}/phpunit.xml.dist"/>
-        </apply>
+        </exec>
     </target>
 
     <target name="phpdoc"

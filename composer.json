@@ -14,7 +14,7 @@
   ],
   "support": {
     "issues": "https://github.com/haswalt/RancherPHP/issues"
-  }
+  },
   "autoload": {
     "psr-4": { "Rancher\\": "src/" }
   },
