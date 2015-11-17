@@ -7,18 +7,6 @@
             depends="prepare,lint,phploc-ci,pdepend,phpmd-ci,phpcs-ci,phpcpd-ci,phpunit,phpdoc"
             description="Run all targets"/>
 
-    <target name="build-parallel" description="Run all targets in parallel">
-        <parallel threadCount="2">
-            <sequential>
-                <antcall target="pdepend"/>
-                <antcall target="phpmd-ci"/>
-            </sequential>
-            <antcall target="phpcpd-ci"/>
-            <antcall target="phpcs-ci"/>
-            <antcall target="phploc-ci"/>
-        </parallel>
-    </target>
-
     <target name="clean"
             unless="clean.done"
             description="Clean up build folder">
