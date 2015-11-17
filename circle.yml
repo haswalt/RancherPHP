@@ -11,7 +11,9 @@ dependencies:
     - vendor
     - bin
   pre:
-    - curl -sS https://getcomposer.org/installer | php
+    - pecl install xdebug
+    - cat ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini | sed -e "s/;//" > xdebug.ini
+    - mv xdebug.ini ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini
   override:
     - composer install --prefer-source --no-interaction
     - docker run -d -p 8080:8080 rancher/server
