@@ -22,4 +22,4 @@ test:
   post:
     - pip install --user codecov
     - codecov
-    - cp -R build/logs/* $$CIRCLE_TEST_REPORTS
+    - cp -R build/logs/* $CIRCLE_TEST_REPORTS
