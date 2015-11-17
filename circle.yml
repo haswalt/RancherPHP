@@ -12,11 +12,9 @@ dependencies:
     - bin
   pre:
     - pecl install xdebug
-    - cat ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini | sed -e "s/;//" > xdebug.ini
-    - mv xdebug.ini ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini
   override:
     - composer install --prefer-source --no-interaction
-    - docker run -d -p 8080:8080 rancher/server
+    #- docker run -d -p 8080:8080 rancher/server
 
 test:
   override:
@@ -24,3 +22,4 @@ test:
   post:
     - pip install --user codecov
     - codecov
+    - cp -R build/logs/* $$CIRCLE_TEST_REPORTS
