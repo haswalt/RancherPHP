@@ -6,7 +6,7 @@ namespace Rancher\Exception;
  * Class InvalidResourceTypeException
  * @package Rancher\Exception
  */
-class InvalidResourceTypeException extends \RuntimeException implements RancherException
+class InvalidResourceTypeException extends \RuntimeException implements RancherExceptionInterface
 {
 
 }

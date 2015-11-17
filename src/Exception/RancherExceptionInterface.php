@@ -3,10 +3,10 @@
 namespace Rancher\Exception;
 
 /**
- * Interface RancherException
+ * Interface RancherExceptionInterface
  * @package Rancher\Exception
  */
-interface RancherException
+interface RancherExceptionInterface
 {
 
 }

@@ -6,7 +6,7 @@ namespace Rancher\Exception;
  * Class ResourceNotFoundException
  * @package Rancher\Exception
  */
-class ResourceNotFoundException extends \RuntimeException implements RancherException
+class ResourceNotFoundException extends \RuntimeException implements RancherExceptionInterface
 {
 
 }
